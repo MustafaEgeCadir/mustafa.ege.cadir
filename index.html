@@ -3,40 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mustafa Ege Çadır - Proje Dünyası</title>
-    <!-- Mobil uyumlu modern tasarım için Tailwind CSS -->
+    <title>Mustafa Ege Çadır - Proje ve Yetenek Günlüğü</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Yatay kaydırma çubuğunu gizle ama kaydırmayı koru */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
 </head>
 <body class="bg-slate-900 text-white min-h-screen font-sans">
     
     <!-- Header / Profil Alanı -->
     <header class="bg-slate-800 border-b border-slate-700 py-8 px-4 text-center">
         <div class="max-w-md mx-auto">
-            <!-- Mustafa Ege'nin Resmi -->
             <img src="mustafa-ege.jpg" alt="Mustafa Ege Çadır" class="w-32 h-32 rounded-full mx-auto object-cover border-4 border-yellow-400 shadow-lg mb-4">
             <h1 class="text-2xl font-bold text-yellow-400">Mustafa Ege Çadır</h1>
-            <p class="text-slate-300 text-sm mt-1">9 Yaşında Küçük Bir Mucit & Oyun Geliştirici 🚀</p>
-            <p class="text-slate-400 text-xs mt-2">Elektronik projelerim, kodladığım eğlenceli oyunlar ve notlarım burada!</p>
+            <p class="text-slate-300 text-sm mt-1">9 Yaşında Küçük Bir Mucit, Oyun Geliştirici,Sporcu & Müzisyen 🚀 🚀</p>
+            <p class="text-slate-400 text-xs mt-2">Elektronik projelerim, oyunlarım, bağlama performanslarım ve İngilizce çalışmalarım burada!</p>
         </div>
     </header>
 
     <!-- Ana İçerik / Kategoriler -->
     <main class="max-w-2xl mx-auto p-4 pb-12">
         
-        <!-- Kategori Filtre Butonları -->
+        <!-- Kategori Filtre Butonları (Scrollbar gizlendi, duruşu değişmedi) -->
         <div class="flex gap-2 overflow-x-auto py-2 mb-6 no-scrollbar">
             <button onclick="filterProjects('all')" class="bg-yellow-500 text-slate-900 font-bold px-4 py-2 rounded-full text-sm whitespace-nowrap shadow">Tümü</button>
             <button onclick="filterProjects('game')" class="bg-slate-800 text-slate-300 hover:bg-slate-700 px-4 py-2 rounded-full text-sm whitespace-nowrap border border-slate-700">🎮 Oyunlar</button>
             <button onclick="filterProjects('electronic')" class="bg-slate-800 text-slate-300 hover:bg-slate-700 px-4 py-2 rounded-full text-sm whitespace-nowrap border border-slate-700">⚡ Elektronik</button>
+            <button onclick="filterProjects('music')" class="bg-slate-800 text-slate-300 hover:bg-slate-700 px-4 py-2 rounded-full text-sm whitespace-nowrap border border-slate-700">🎵 Bağlama</button>
+            <button onclick="filterProjects('english')" class="bg-slate-800 text-slate-300 hover:bg-slate-700 px-4 py-2 rounded-full text-sm whitespace-nowrap border border-slate-700">🇬🇧 İngilizce</button>
+            <button onclick="filterProjects('basketbol')" class="bg-slate-800 text-slate-300 hover:bg-slate-700 px-4 py-2 rounded-full text-sm whitespace-nowrap border border-slate-700">🏀 Basketbol</button>
         </div>
 
         <h2 class="text-lg font-bold mb-4 text-slate-200 border-l-4 border-yellow-400 pl-3">Projelerim ve Çalışmalarım</h2>
 
         <!-- Proje Listesi -->
-        <div id="project-list" class="grid gap-4">
+        <div id="project-list" class="grid gap-6">
             
-            <!-- PROJE 1: Araba Oyunu -->
+            <!-- PROJE 1: Oyun -->
             <div class="project-card game bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-md flex flex-col sm:flex-row gap-4 items-center">
                 <div class="w-full sm:w-32 h-32 bg-gradient-to-br from-red-500 to-orange-600 rounded-lg flex items-center justify-center text-4xl shrink-0 shadow">
                     🏎️
@@ -51,18 +62,70 @@
                 </div>
             </div>
 
-            <!-- PROJE 2: Örnek Elektronik Proje (İleride dolduracaksınız) -->
-            <div class="project-card electronic bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-md flex flex-col sm:flex-row gap-4 items-center opacity-80">
-                <div class="w-full sm:w-32 h-32 bg-gradient-to-br from-purple-600 to-indigo-700 rounded-lg flex items-center justify-center text-4xl shrink-0 shadow">
-                    💡
+            <!-- PROJE 2: Elektronik Pong Oyunu (Mustafa Ege'nin Yazısı + Yan Yana Resim Galerisi + Düzeltilmiş Video) -->
+            <div class="project-card electronic bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-md flex flex-col gap-4">
+                <div class="flex flex-col sm:flex-row gap-4 items-center">
+                    <div class="w-full sm:w-32 h-32 bg-gradient-to-br from-purple-600 to-indigo-700 rounded-lg flex items-center justify-center text-4xl shrink-0 shadow">
+                        ⚡
+                    </div>
+                    <div class="flex-1 text-center sm:text-left">
+                        <span class="bg-purple-500/20 text-purple-300 text-xs font-semibold px-2.5 py-0.5 rounded">Elektronik</span>
+                        <h3 class="text-lg font-bold mt-1 text-yellow-300">Elektronik Pong Oyunu Devre Projemiz</h3>
+                        <p class="text-slate-400 text-xs mt-1 leading-relaxed">Merhaba! Ben, Arduino kullanarak tamamen kendi yaptığım 2 kişilik elektronik Pong oyunumu anlatmak istiyorum. Bilgisayarda oyun oynamayı çok seviyorum ama bu sefer oyunu oynamakla kalmadım ve kendi oyun konsolumu kendim yaptım. Projem için ilk önce Arduino işlemcimi, LED ekranımı ve çevirmeli düğmelerimi aldım. En çok rengarenk kabloları doğru yerlere takarken zorlandım çünkü çok fazla kablo vardı ve kafam karıştı ama hepsini tek tek çözdüm. Sonra topun ekrandan sekmesi, hızlanması ve skor tutması için gereken kodları hazırladım. Kodlama yaparken babam da bana yardım etti ve kodları birlikte yükledik. Projeyi yaparken en eğlendiğim an ise yaptığım bağlantıları ve kodları ilk kez denediğim an oldu. Oyunun sorunsuz çalıştığını ve düğmeleri çevirince ekrandaki paletlerin hareket ettiğini görmek beni çok mutlu etti. Şimdi arkadaşlarımla karşılıklı oynamaya hazırız!</p>
+                    </div>
                 </div>
-                <div class="flex-1 text-center sm:text-left">
-                    <span class="bg-purple-500/20 text-purple-300 text-xs font-semibold px-2.5 py-0.5 rounded">Elektronik</span>
-                    <h3 class="text-lg font-bold mt-1 text-yellow-300">İlk LED Devrem (Çok Yakında)</h3>
-                    <p class="text-slate-400 text-xs mt-1">Breadboard ve dirençler kullanarak yaptığımız ilk yanıp sönen lamba projesi.</p>
-                    <span class="inline-block mt-3 bg-slate-700 text-slate-400 text-xs font-bold px-3 py-1.5 rounded-lg">
-                        Yakında Eklenecek ⏳
-                    </span>
+
+                <!-- Resim Galerisi (Telefonda 2'li, Bilgisayarda 4'lü yan yana, tıklayınca büyür) -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    <img src="img/oyunlar/pong/pong_1.jpeg" onclick="openModal(this.src)" alt="Pong Resim 1" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
+                    <img src="img/oyunlar/pong/pong_2.jpeg" onclick="openModal(this.src)" alt="Pong Resim 2" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
+                    <img src="img/oyunlar/pong/pong_3.jpeg" onclick="openModal(this.src)" alt="Pong Resim 3" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
+                    <img src="img/oyunlar/pong/pong_4.jpeg" onclick="openModal(this.src)" alt="Pong Resim 4" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
+					<img src="img/oyunlar/pong/pong_5.jpeg" onclick="openModal(this.src)" alt="Pong Resim 4" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
+					<img src="img/oyunlar/pong/pong_6.jpeg" onclick="openModal(this.src)" alt="Pong Resim 4" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
+					<img src="img/oyunlar/pong/pong_7.jpeg" onclick="openModal(this.src)" alt="Pong Resim 4" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
+					<img src="img/oyunlar/pong/pong_8.jpeg" onclick="openModal(this.src)" alt="Pong Resim 4" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
+					<img src="img/oyunlar/pong/pong_9.jpeg" onclick="openModal(this.src)" alt="Pong Resim 4" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
+					<img src="img/oyunlar/pong/pong_10.jpeg" onclick="openModal(this.src)" alt="Pong Resim 4" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
+	                </div>
+
+                <!-- Düzeltilmiş YouTube Video Linki (embed formatı) -->
+                <div class="relative w-full aspect-video rounded-lg overflow-hidden border border-slate-700 bg-slate-900">
+                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/2GbFUJI2vB4" title="Elektronik Pong Oyunu" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <!-- PROJE 3: Müzik - Bağlama -->
+            <div class="project-card music bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-md flex flex-col gap-4">
+                <div class="flex flex-col sm:flex-row gap-4 items-center">
+                    <div class="w-full sm:w-32 h-32 bg-gradient-to-br from-amber-600 to-yellow-700 rounded-lg flex items-center justify-center text-4xl shrink-0 shadow">
+                        🎵
+                    </div>
+                    <div class="flex-1 text-center sm:text-left">
+                        <span class="bg-amber-500/20 text-amber-300 text-xs font-semibold px-2.5 py-0.5 rounded">Bağlama</span>
+                        <h3 class="text-lg font-bold mt-1 text-yellow-300">Bağlama ile İlk Türkü Denemem</h3>
+                        <p class="text-slate-400 text-xs mt-1">Bağlama çalmayı öğrenirken kaydettiğim ilk performanslardan biri. İyi dinlemeler!</p>
+                    </div>
+                </div>
+                <div class="relative w-full aspect-video rounded-lg overflow-hidden border border-slate-700 bg-slate-900">
+                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/YOUTUBE_VIDEO_KODU_3" title="Baglama Videosu" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <!-- PROJE 4: İngilizce -->
+            <div class="project-card english bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-md flex flex-col gap-4">
+                <div class="flex flex-col sm:flex-row gap-4 items-center">
+                    <div class="w-full sm:w-32 h-32 bg-gradient-to-br from-blue-600 to-cyan-700 rounded-lg flex items-center justify-center text-4xl shrink-0 shadow">
+                        🇬🇧
+                    </div>
+                    <div class="flex-1 text-center sm:text-left">
+                        <span class="bg-cyan-500/20 text-cyan-300 text-xs font-semibold px-2.5 py-0.5 rounded">İngilizce</span>
+                        <h3 class="text-lg font-bold mt-1 text-yellow-300">İngilizce Hikaye Sunumu / Konuşma</h3>
+                        <p class="text-slate-400 text-xs mt-1">İngilizce öğrendiklerimi pratik yaparken çektiğim sunum videosu.</p>
+                    </div>
+                </div>
+                <div class="relative w-full aspect-video rounded-lg overflow-hidden border border-slate-700 bg-slate-900">
+                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/YOUTUBE_VIDEO_KODU_4" title="Ingilizce Videosu" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
 
@@ -72,20 +135,23 @@
         <section class="mt-12 bg-slate-800 border border-slate-700 rounded-xl p-4 text-center">
             <h3 class="text-md font-bold text-yellow-400 mb-2">Ziyaretçi Defteri & Yorumlar 💬</h3>
             <p class="text-slate-400 text-xs mb-4">Mustafa Ege'nin projelerine buradan yorum yapabilir, beğenebilirsiniz!</p>
-            
-            <!-- Buraya daha sonra Giscus yorum aracı eklenebilir -->
             <div class="text-slate-400 text-xs bg-slate-900 p-4 rounded-lg border border-slate-800">
                 Yorumlar ve Beğeniler aktifleşiyor... 🚀
             </div>
         </section>
     </main>
 
+    <!-- Resme Tıklayınca Tam Ekran Büyüten Pencere (Modal) -->
+    <div id="imageModal" onclick="closeModal()" class="fixed inset-0 bg-black/90 z-50 hidden flex justify-center items-center p-4 cursor-pointer">
+        <img id="modalImg" class="max-w-full max-h-full rounded-lg shadow-2xl">
+    </div>
+
     <!-- Footer -->
     <footer class="text-center py-6 text-xs text-slate-500 border-t border-slate-800">
         © 2026 Mustafa Ege Çadır & Babası | Tüm Hakları Saklıdır. 🌟
     </footer>
 
-    <!-- Kategori Filtreleme Scripti -->
+    <!-- Scriptler (Filtreleme ve Resim Büyütme) -->
     <script>
         function filterProjects(category) {
             const cards = document.querySelectorAll('.project-card');
@@ -96,6 +162,17 @@
                     card.style.display = 'none';
                 }
             });
+        }
+
+        function openModal(src) {
+            document.getElementById('modalImg').src = src;
+            document.getElementById('imageModal').classList.remove('hidden');
+            document.getElementById('imageModal').classList.add('flex');
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').classList.add('hidden');
+            document.getElementById('imageModal').classList.remove('flex');
         }
     </script>
 </body>
