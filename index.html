@@ -46,6 +46,26 @@
 
         <!-- Proje Listesi -->
         <div id="project-list" class="grid gap-6">
+		
+            <!-- PROJE 2: Elektronik Pong Oyunu (Mustafa Ege'nin Yazısı + Yan Yana Resim Galerisi + Düzeltilmiş Video) -->
+            <div class="project-card electronic bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-md flex flex-col gap-4">
+                <div class="flex flex-col sm:flex-row gap-4 items-center">
+                    <div class="w-full sm:w-32 h-32 bg-gradient-to-br from-purple-600 to-indigo-700 rounded-lg flex items-center justify-center text-4xl shrink-0 shadow">
+                        ⚡
+                    </div>
+                    <div class="flex-1 text-center sm:text-left">
+                        <span class="bg-purple-500/20 text-purple-300 text-xs font-semibold px-2.5 py-0.5 rounded">Elektronik</span>
+                        <h3 class="text-lg font-bold mt-1 text-yellow-300">Yapay Zeka Memo</h3>
+                        <p class="text-slate-400 text-xs mt-1 leading-relaxed">Merhaba! Yakında Yapay Zeka Projemin detaylarını paylaşacağım.</p>
+                    </div>
+                </div>
+
+                <!-- Resim Galerisi (Telefonda 2'li, Bilgisayarda 4'lü yan yana, tıklayınca büyür) -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    <img src="img/yapayzeka/memo_1.jpeg" onclick="openModal(this.src)" alt="Memo Resim 1" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
+	                </div>
+
+            </div>		
             
             <!-- PROJE 1: Oyun -->
             <div class="project-card game bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-md flex flex-col sm:flex-row gap-4 items-center">
@@ -100,6 +120,10 @@
                     <iframe class="w-full h-full" src="https://www.youtube.com/embed/2GbFUJI2vB4" title="Elektronik Pong Oyunu" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
+
+
+
+
 
             <!-- PROJE 3: Müzik - Bağlama -->
             <div class="project-card music bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-md flex flex-col gap-4">
@@ -167,11 +191,11 @@
 				
                 <!-- Resim Galerisi (Telefonda 2'li, Bilgisayarda 4'lü yan yana, tıklayınca büyür) -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                    <img src="img/basketbol/basket_1.jpeg" onclick="openModal(this.src)" alt="Basket Resim 1" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
-                    <img src="img/basketbol/basket_2.jpeg" onclick="openModal(this.src)" alt="Basket Resim 2" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
-                    <img src="img/basketbol/basket_3.jpeg" onclick="openModal(this.src)" alt="Basket Resim 3" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
-                    <img src="img/basketbol/basket_4.jpeg" onclick="openModal(this.src)" alt="Basket Resim 4" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
-					<img src="img/basketbol/basket_5.jpeg" onclick="openModal(this.src)" alt="Basket Resim 5" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
+                    <img src="img/Basketbol/basket_1.jpeg" onclick="openModal(this.src)" alt="Basket Resim 1" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
+                    <img src="img/Basketbol/basket_2.jpeg" onclick="openModal(this.src)" alt="Basket Resim 2" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
+                    <img src="img/Basketbol/basket_3.jpeg" onclick="openModal(this.src)" alt="Basket Resim 3" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
+                    <img src="img/Basketbol/basket_4.jpeg" onclick="openModal(this.src)" alt="Basket Resim 4" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
+					<img src="img/Basketbol/basket_5.jpeg" onclick="openModal(this.src)" alt="Basket Resim 5" class="w-full h-24 rounded-lg object-cover cursor-pointer hover:opacity-90 border border-slate-600 shadow transition">
 	                </div>				
 				
                 <div class="relative w-full aspect-video rounded-lg overflow-hidden border border-slate-700 bg-slate-900">
