@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mustafa Ege'nin İlk Araba Oyunu</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a2e;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            color: white;
+            touch-action: manipulation;
+        }
+
+        #game-container {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            height: 100vh;
+            max-height: 750px;
+            background-color: #4a4a4a;
+            border: 3px solid #fff;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(0,0,0,0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Oyun Alanı */
+        #play-area {
+            position: relative;
+            width: 100%;
+            height: calc(100% - 110px);
+            overflow: hidden;
+            background: #3f3f3f;
+        }
+
+        /* Yol Şerit Çizgileri */
+        .lane-line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 45px;
+            background-color: #fff;
+            border-radius: 4px;
+        }
+
+        /* Araba */
+        #car {
+            position: absolute;
+            bottom: 25px;
+            width: 55px;
+            height: 90px;
+            background-color: #e74c3c;
+            border-radius: 12px;
+            transition: left 0.12s ease-out;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+            border: 2px solid #c0392b;
+            z-index: 5;
+        }
+
+        #car::after {
+            content: '';
+            position: absolute;
+            top: 18px;
+            left: 6px;
+            width: 39px;
+            height: 22px;
+            background-color: #3498db;
+            border-radius: 4px;
+            border: 2px solid #2980b9;
+        }
+
+        #car::before {
+            content: '';
+            position: absolute;
+            bottom: 12px;
+            left: 6px;
+            width: 39px;
+            height: 15px;
+            background-color: #2c3e50;
+            border-radius: 3px;
+        }
+
+        /* Kapılar / Seçenekler */
+        .gate {
+            position: absolute;
+            top: -70px;
+            width: 44%;
+            height: 55px;
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            border: 3px solid #fff;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.4);
+            z-index: 4;
+            color: #ffffff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* Bilgi Paneli */
+        #ui {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.75);
+            padding: 8px 12px;
+            border-radius: 10px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.2);
+            font-size: 13px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn {
+            background-color: #f39c12;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 11px;
+            transition: all 0.2s;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-exit {
+            background-color: #c0392b;
+        }
+
+        #question-box {
+            position: absolute;
+            top: 65px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(241, 196, 15, 0.95);
+            color: #2c3e50;
+            padding: 8px 22px;
+            border-radius: 25px;
+            font-size: 20px;
+            font-weight: 800;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border: 2px solid #f39c12;
+            white-space: nowrap;
+        }
+
+        /* Ekran Karartma & Ekranlar */
+        .overlay-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 15, 25, 0.94);
+            z-index: 30;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .overlay-screen h1 {
+            font-size: 22px;
+            color: #f1c40f;
+            margin-bottom: 10px;
+            line-height: 1.3;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .overlay-screen p {
+            font-size: 14px;
+            color: #ecf0f1;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        /* İşlem Seçim Butonları */
+        .mode-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            max-width: 260px;
+        }
+
+        .mode-btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: 2px solid #5d6d7e;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: all 0.2s;
+        }
+
+        .mode-btn:active {
+            transform: scale(0.96);
+            background: linear-gradient(135deg, #2980b9, #1c5980);
+        }
+
+        .mode-btn.random {
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(46, 204, 113, 0.4);
+            transition: transform 0.2s;
+            margin-top: 15px;
+        }
+
+        /* Dokunmatik Kontroller */
+        #touch-controls {
+            height: 110px;
+            background: #222;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 20px;
+            border-top: 3px solid #444;
+            z-index: 15;
+        }
+
+        .touch-btn {
+            width: 45%;
+            height: 75px;
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            border: 2px solid #5d6d7e;
+            border-radius: 15px;
+            color: white;
+            font-size: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            box-shadow: 0 5px 0 #1a252f;
+            transition: all 0.1s ease;
+        }
+
+        .touch-btn:active {
+            box-shadow: 0 2px 0 #1a252f;
+            transform: translateY(3px);
+            background: linear-gradient(135deg, #2e4053, #1f2c38);
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <!-- Karşılama Ekranı -->
+    <div id="welcome-screen" class="overlay-screen">
+        <h1>Mustafa Ege'nin İlk Araba Oyununa Hoş Geldiniz! 🏎️💨</h1>
+        <p>Oynamak istediğiniz işlem türünü seçin:</p>
+        
+        <div class="mode-container">
+            <button class="mode-btn" onclick="startGame('add')">➕ Toplama</button>
+            <button class="mode-btn" onclick="startGame('sub')">➖ Çıkarma</button>
+            <button class="mode-btn" onclick="startGame('mul')">✖️ Çarpma</button>
+            <button class="mode-btn" onclick="startGame('div')">➗ Bölme</button>
+            <button class="mode-btn random" onclick="startGame('mix')">🔀 Karışık</button>
+        </div>
+    </div>
+
+    <!-- Durdurma Ekranı -->
+    <div id="pause-screen" class="overlay-screen" style="display: none;">
+        <h1>OYUN DURDURULDU ⏸️</h1>
+        <button class="start-btn" onclick="togglePause()" style="background: linear-gradient(135deg, #f39c12, #d35400);">DEVAM ET</button>
+    </div>
+
+    <!-- Oyun Sonu / Kazandı Ekranı -->
+    <div id="end-screen" class="overlay-screen" style="display: none;">
+        <h1 id="end-title">TEBRİKLER! 🎉</h1>
+        <p id="end-desc">Oyun Bitti!</p>
+        <button class="start-btn" onclick="returnToMenu()">ANA MENÜYE DÖN</button>
+    </div>
+
+    <!-- Oyun Alanı -->
+    <div id="play-area">
+        <div id="ui">
+            <div>Soru: <span id="q-count" style="color: #3498db; font-weight: bold;">0</span>/50</div>
+            <div>Skor: <span id="score" style="color: #f1c40f; font-weight: bold;">0</span></div>
+            <div>Can: <span id="lives">❤️❤️❤️</span></div>
+            <div class="btn-group">
+                <button class="btn" id="pause-btn" onclick="togglePause()">Durdur</button>
+                <button class="btn btn-exit" onclick="exitGame()">Çıkış</button>
+            </div>
+        </div>
+
+        <div id="question-box">...</div>
+
+        <!-- Yol Çizgileri -->
+        <div class="lane-line" style="top: 0px;"></div>
+        <div class="lane-line" style="top: 120px;"></div>
+        <div class="lane-line" style="top: 240px;"></div>
+        <div class="lane-line" style="top: 360px;"></div>
+        <div class="lane-line" style="top: 480px;"></div>
+
+        <!-- Kapılar -->
+        <div id="gate-left" class="gate" style="left: 4%;">?</div>
+        <div id="gate-right" class="gate" style="right: 4%;">?</div>
+
+        <!-- Oyuncu Arabası -->
+        <div id="car"></div>
+    </div>
+
+    <!-- Dokunmatik Kontroller -->
+    <div id="touch-controls">
+        <div class="touch-btn" id="btn-left" onclick="moveLeft()">◀ SOL</div>
+        <div class="touch-btn" id="btn-right" onclick="moveRight()">SAĞ ▶</div>
+    </div>
+</div>
+
+<script>
+    const car = document.getElementById('car');
+    const questionBox = document.getElementById('question-box');
+    const gateLeft = document.getElementById('gate-left');
+    const gateRight = document.getElementById('gate-right');
+    const scoreText = document.getElementById('score');
+    const qCountText = document.getElementById('q-count');
+    const livesText = document.getElementById('lives');
+    const laneLines = document.querySelectorAll('.lane-line');
+    
+    const welcomeScreen = document.getElementById('welcome-screen');
+    const pauseScreen = document.getElementById('pause-screen');
+    const endScreen = document.getElementById('end-screen');
+    const pauseBtn = document.getElementById('pause-btn');
+
+    let currentLane = 0;
+    let speed = 3.5; 
+    let displaySpeed = 80; 
+    let score = 0;
+    let questionCount = 0;
+    let maxQuestions = 50;
+    let lives = 3;
+    let selectedMode = 'mix'; // 'add', 'sub', 'mul', 'div', 'mix'
+    
+    let gateY = -70;
+    let isPaused = true; 
+    let gameStarted = false;
+    let animationFrameId;
+
+    let correctAnswer = 0;
+    let currentQuestion = "";
+
+    function updateCarPosition() {
+        const playAreaWidth = document.getElementById('play-area').clientWidth;
+        const carWidth = 55;
+        
+        if (currentLane === 0) {
+            car.style.left = (playAreaWidth * 0.25 - carWidth / 2) + 'px';
+        } else {
+            car.style.left = (playAreaWidth * 0.75 - carWidth / 2) + 'px';
+        }
+    }
+
+    function moveLeft() {
+        if (isPaused) return;
+        currentLane = 0;
+        updateCarPosition();
+    }
+
+    function moveRight() {
+        if (isPaused) return;
+        currentLane = 1;
+        updateCarPosition();
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (!gameStarted) return;
+        
+        if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+            moveLeft();
+        } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+            moveRight();
+        } else if (e.key === 'p' || e.key === 'P') {
+            togglePause();
+        }
+    });
+
+    window.addEventListener('resize', updateCarPosition);
+
+    function startGame(mode) {
+        selectedMode = mode;
+        welcomeScreen.style.display = 'none';
+        endScreen.style.display = 'none';
+        
+        score = 0;
+        questionCount = 0;
+        lives = 3;
+        speed = 3.5;
+        displaySpeed = 80;
+        currentLane = 0;
+        gateY = -70;
+
+        scoreText.innerText = score;
+        qCountText.innerText = questionCount;
+        updateLivesDisplay();
+
+        gameStarted = true;
+        isPaused = false;
+        
+        updateCarPosition();
+        generateQuestion();
+        gameLoop();
+    }
+
+    function returnToMenu() {
+        endScreen.style.display = 'none';
+        welcomeScreen.style.display = 'flex';
+    }
+
+    function updateLivesDisplay() {
+        let hearts = "";
+        for (let i = 0; i < lives; i++) hearts += "❤️";
+        for (let i = lives; i < 3; i++) hearts += "🖤";
+        livesText.innerText = hearts;
+    }
+
+    function generateQuestion() {
+        if (questionCount >= maxQuestions) {
+            winGame();
+            return;
+        }
+
+        questionCount++;
+        qCountText.innerText = questionCount;
+
+        let op = selectedMode;
+        if (op === 'mix') {
+            const modes = ['add', 'sub', 'mul', 'div'];
+            op = modes[Math.floor(Math.random() * modes.length)];
+        }
+
+        let num1, num2;
+
+        if (op === 'add') {
+            num1 = Math.floor(Math.random() * 15) + 1;
+            num2 = Math.floor(Math.random() * 15) + 1;
+            currentQuestion = `${num1} + ${num2} = ?`;
+            correctAnswer = num1 + num2;
+        } else if (op === 'sub') {
+            num1 = Math.floor(Math.random() * 15) + 5;
+            num2 = Math.floor(Math.random() * num1) + 1; // Pozitif sonuç için
+            currentQuestion = `${num1} - ${num2} = ?`;
+            correctAnswer = num1 - num2;
+        } else if (op === 'mul') {
+            num1 = Math.floor(Math.random() * 9) + 1;
+            num2 = Math.floor(Math.random() * 9) + 1;
+            currentQuestion = `${num1} × ${num2} = ?`;
+            correctAnswer = num1 * num2;
+        } else if (op === 'div') {
+            num2 = Math.floor(Math.random() * 8) + 2;
+            let multiplier = Math.floor(Math.random() * 8) + 1;
+            num1 = num2 * multiplier; // Tam bölünen sayı üret
+            currentQuestion = `${num1} ÷ ${num2} = ?`;
+            correctAnswer = multiplier;
+        }
+
+        let wrongAnswer = correctAnswer + (Math.random() > 0.5 ? 1 : -1) * (Math.floor(Math.random() * 3) + 1);
+        if (wrongAnswer < 0) wrongAnswer = correctAnswer + 2;
+
+        questionBox.innerText = currentQuestion;
+
+        if (Math.random() > 0.5) {
+            gateLeft.innerText = correctAnswer;
+            gateLeft.dataset.correct = "true";
+            gateRight.innerText = wrongAnswer;
+            gateRight.dataset.correct = "false";
+        } else {
+            gateLeft.innerText = wrongAnswer;
+            gateLeft.dataset.correct = "false";
+            gateRight.innerText = correctAnswer;
+            gateRight.dataset.correct = "true";
+        }
+    }
+
+    function gameLoop() {
+        if (isPaused) return;
+
+        const playAreaHeight = document.getElementById('play-area').clientHeight;
+
+        laneLines.forEach(line => {
+            let top = parseFloat(line.style.top);
+            top += speed;
+            if (top > playAreaHeight) top = -45;
+            line.style.top = top + 'px';
+        });
+
+        gateY += speed;
+        gateLeft.style.top = gateY + 'px';
+        gateRight.style.top = gateY + 'px';
+
+        const carTop = playAreaHeight - 115;
+        if (gateY >= carTop - 40 && gateY <= carTop + 20) {
+            checkAnswer();
+            if (lives > 0 && questionCount < maxQuestions) {
+                resetGates();
+            }
+        }
+
+        if (!isPaused) {
+            animationFrameId = requestAnimationFrame(gameLoop);
+        }
+    }
+
+    function checkAnswer() {
+        let selectedGate = (currentLane === 0) ? gateLeft : gateRight;
+
+        if (selectedGate.dataset.correct === "true") {
+            score += 10;
+            speed += 0.35; 
+            displaySpeed += 8;
+        } else {
+            score = Math.max(0, score - 5);
+            speed = Math.max(2.5, speed - 0.4); 
+            displaySpeed = Math.max(50, displaySpeed - 10);
+            
+            lives--;
+            updateLivesDisplay();
+
+            if (lives <= 0) {
+                gameOver();
+            }
+        }
+
+        scoreText.innerText = score;
+    }
+
+    function resetGates() {
+        gateY = -70;
+        generateQuestion();
+    }
+
+    function winGame() {
+        isPaused = true;
+        cancelAnimationFrame(animationFrameId);
+        document.getElementById('end-title').innerText = "TEBRİKLER! 🏆";
+        document.getElementById('end-desc').innerHTML = `50 sorunun tamamını başardın!<br><br>Toplam Puanın: <b>${score}</b>`;
+        endScreen.style.display = 'flex';
+    }
+
+    function gameOver() {
+        isPaused = true;
+        cancelAnimationFrame(animationFrameId);
+        document.getElementById('end-title').innerText = "OYUN BİTTİ ❌";
+        document.getElementById('end-desc').innerHTML = `3 kez yanlış cevap verdiğin için elendin.<br><br>Topladığın Puan: <b>${score}</b>`;
+        endScreen.style.display = 'flex';
+    }
+
+    function togglePause() {
+        if (!gameStarted) return;
+        
+        isPaused = !isPaused;
+        if (isPaused) {
+            pauseScreen.style.display = 'flex';
+            pauseBtn.innerText = 'Devam Et';
+            cancelAnimationFrame(animationFrameId);
+        } else {
+            pauseScreen.style.display = 'none';
+            pauseBtn.innerText = 'Durdur';
+            gameLoop();
+        }
+    }
+
+    function exitGame() {
+        const wasPaused = isPaused;
+        isPaused = true;
+        cancelAnimationFrame(animationFrameId);
+        
+        if (confirm("Oyundan çıkmak ve ana ekrana dönmek istediğinize emin misiniz?")) {
+            gameStarted = false;
+            pauseScreen.style.display = 'none';
+            endScreen.style.display = 'none';
+            welcomeScreen.style.display = 'flex';
+            pauseBtn.innerText = 'Durdur';
+        } else {
+            if (!wasPaused) {
+                isPaused = false;
+                gameLoop();
+            }
+        }
+    }
+
+    updateCarPosition();
+</script>
+
+</body>
+</html>
